@@ -806,6 +806,12 @@ static int goodix_ts_probe(struct i2c_client *client,
 	if (error)
 		return error;
 
+	gpiod_direction_output(ts->gpiod_int, 0);
+    msleep(10);
+    gpiod_direction_output(ts->gpiod_int, 1);
+    msleep(10);
+    gpiod_direction_input(ts->gpiod_int);
+
 	if (ts->gpiod_int && ts->gpiod_rst) {
 		/* reset the controller */
 		error = goodix_reset(ts);

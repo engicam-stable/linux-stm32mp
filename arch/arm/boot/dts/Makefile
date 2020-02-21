@@ -929,7 +929,14 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp157c-ed1.dtb \
 	stm32mp157c-ev1.dtb \
 	stm32mp157c-ev1-a7-examples.dtb \
-	stm32mp157c-ev1-m4-examples.dtb
+	stm32mp157c-ev1-m4-examples.dtb \
+	stm32mp157a-ugeast-mx.dtb \
+	stm32mp157a-ugeast-mx-m4.dtb \
+	stm32mp157a-ugeast-mx-lcd7.dtb \
+	stm32mp157a-icorestm32-mx.dtb \
+	stm32mp157a-ugeast-mx-lcd10.dtb \
+	stm32mp157a-icorestm32-lvds-mx.dtb \
+	stm32mp157a-icorestm32-ofcap2-10.dtb
 dtb-$(CONFIG_MACH_SUN4I) += \
 	sun4i-a10-a1000.dtb \
 	sun4i-a10-ba10-tvbox.dtb \

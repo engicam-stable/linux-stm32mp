@@ -451,6 +451,11 @@ struct brcmf_mp_device *brcmf_get_module_param(struct device *dev,
 		/* No platform data for this device, try OF (Open Firwmare) */
 		brcmf_of_probe(dev, bus_type, settings);
 	}
+
+        settings->bus.sdio.broken_sg_support = true;
+        settings->bus.sdio.oob_irq_supported = false;
+        settings->bus.sdio.sd_head_align = 4;
+        settings->bus.sdio.sd_sgentry_align = 512;
 	return settings;
 }
 

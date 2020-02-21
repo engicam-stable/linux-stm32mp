@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) STMicroelectronics 2017 - All Rights Reserved
+ * Author: Alexandre Torgue <alexandre.torgue@st.com> for STMicroelectronics.
+ */
+
+/dts-v1/;
+
+#include "stm32mp157a-ugeast-mx-lcd7.dts"
+
+/ {
+	model = "STMicroelectronics STM32MP157A-UGEAST configured to run M4 examples";
+	compatible = "st,stm32mp157a-ugeast-mx", "st,stm32mp157";
+};
+
+&adc {
+	status = "disabled";
+};
+
+&dac {
+	status = "disabled";
+};
+
+&dma2 {
+	status = "disabled";
+};
+
+&dmamux1 {
+	dma-masters = <&dma1>;
+	dma-channels = <8>;
+};
+
+&m4_rng2 {
+	status = "okay";
+};
+
+&m4_rproc {
+	m4_system_resources {
+		status = "okay";
+	};
+};
+
+&timers1 {
+	status = "disabled";
+};

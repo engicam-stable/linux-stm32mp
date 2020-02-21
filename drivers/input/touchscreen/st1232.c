@@ -116,7 +116,6 @@ static irqreturn_t st1232_ts_irq_handler(int irq, void *dev_id)
 		if (!finger[i].is_valid)
 			continue;
 
-		input_report_abs(input_dev, ABS_MT_TOUCH_MAJOR, finger[i].t);
 		input_report_abs(input_dev, ABS_MT_POSITION_X, finger[i].x);
 		input_report_abs(input_dev, ABS_MT_POSITION_Y, finger[i].y);
 		input_mt_sync(input_dev);
@@ -200,7 +199,7 @@ static int st1232_ts_probe(struct i2c_client *client,
 	__set_bit(EV_KEY, input_dev->evbit);
 	__set_bit(EV_ABS, input_dev->evbit);
 
-	input_set_abs_params(input_dev, ABS_MT_TOUCH_MAJOR, 0, MAX_AREA, 0, 0);
+	
 	input_set_abs_params(input_dev, ABS_MT_POSITION_X, MIN_X, MAX_X, 0, 0);
 	input_set_abs_params(input_dev, ABS_MT_POSITION_Y, MIN_Y, MAX_Y, 0, 0);
 
