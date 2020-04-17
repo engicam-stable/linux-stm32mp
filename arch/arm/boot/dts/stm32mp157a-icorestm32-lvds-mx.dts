@@ -178,7 +178,27 @@
 		enable-active-high;
 		regulator-always-on;
 	};
+	reg_wifi: regulator-wifi {
+		compatible = "regulator-fixed";
+		regulator-name = "wifi";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpioi 4 1>;
+		startup-delay-us = <100>;
+        enable-active-high;
+        regulator-always-on;
+	};
 
+	reg_bl: regulator-bt {
+		compatible = "regulator-fixed";
+		regulator-name = "bt";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpioi 0 1>;
+		startup-delay-us = <100>;
+        enable-active-high;
+        regulator-always-on;
+	};
 	/* USER CODE BEGIN root */
 	
 	sram: sram@10050000 {
@@ -196,11 +216,11 @@
 	
     aliases {
 		ethernet0 = &ethernet0;
-		serial0 = &uart4;
+		serial0 = &uart4; /*LINUX CONSOLE*/
 		serial1 = &uart8;
-		serial2 = &usart3;
+		serial2 = &usart3; /*Bluetooth*/
 		serial3 = &uart7;
-		serial4 = &usart1;		
+		serial4 = &usart1; /*RS485*/
 	};
 
 	usb_phy_tuning: usb-phy-tuning {
@@ -312,7 +332,6 @@
 */
     };
 
-
     fdcan1_pins_mx: fdcan1_mx-0 {
         pins1 {
             pinmux = <STM32_PINMUX('H', 13, AF9)>; /* FDCAN1_TX */
@@ -321,7 +340,19 @@
             slew-rate = <0>;
         };
         pins2 {
-            pinmux = <STM32_PINMUX('H', 14, AF9)>; /* FDCAN1_RX */
+            pinmux = <STM32_PINMUX('I', 9, AF9)>; /* FDCAN1_RX */
+            bias-disable;
+        };
+    };
+    fdcan2_pins_mx: fdcan2_mx-0 {
+        pins1 {
+            pinmux = <STM32_PINMUX('B', 6, AF9)>; /* FDCAN2_TX */
+            bias-disable;
+            drive-push-pull;
+            slew-rate = <0>;
+        };
+        pins2 {
+            pinmux = <STM32_PINMUX('B', 5, AF9)>; /* FDCAN2_RX */
             bias-disable;
         };
     };
@@ -431,6 +462,25 @@
             slew-rate = <3>;
         };
     };
+    sdmmc3_pins_mx: sdmmc3_mx-0 {
+        u-boot,dm-pre-reloc;
+        pins1 {
+                pinmux = <STM32_PINMUX('F', 0, AF9)>, /* SDMMC3_D0 */
+                            <STM32_PINMUX('F', 4, AF9)>, /* SDMMC3_D1 */
+                            <STM32_PINMUX('F', 5, AF9)>, /* SDMMC3_D2 */
+                            <STM32_PINMUX('D', 7, AF10)>, /* SDMMC3_D3 */
+                            <STM32_PINMUX('F', 1, AF9)>; /* SDMMC3_CMD */
+                slew-rate = <0>;
+			    drive-push-pull;
+                bias-pull-up;
+        };
+        pins2 {
+                pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC2_CK */
+                slew-rate = <0>;
+                drive-push-pull;
+                bias-pull-down;
+        };
+    };
     uart4_pins_mx: uart4_mx-0 {
         u-boot,dm-pre-reloc;
         pins1 {
@@ -446,7 +496,39 @@
             bias-disable;
         };
     };
-
+    usart1_pins_mx: usart1_mx-0 {
+        u-boot,dm-pre-reloc;
+        pins1 {
+            u-boot,dm-pre-reloc;
+            pinmux = <STM32_PINMUX('Z', 1, AF7)>; /* USART1_RX */
+            bias-disable;
+        };
+        pins2 {
+            u-boot,dm-pre-reloc;
+            pinmux = <STM32_PINMUX('Z', 2, AF7)>, /* USART1_TX */
+                     <STM32_PINMUX('E', 14, GPIO)>; /* USART1_RTS */
+            bias-disable;
+            drive-push-pull;
+            slew-rate = <0>;
+        };
+    };
+    usart3_pins_mx: usart3_mx-0 {
+        u-boot,dm-pre-reloc;
+        pins1 {
+            u-boot,dm-pre-reloc;
+            pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
+                     <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
+            bias-disable;
+        };
+        pins2 {
+            u-boot,dm-pre-reloc;
+            pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
+                     <STM32_PINMUX('I', 10, AF8)>; /* USART3_CTS */
+            bias-disable;
+            drive-push-pull;
+            slew-rate = <0>;
+        };
+    }; 
     eth1_sleep_pins_mx: eth1_sleep_mx-0 {
         pins {
             pinmux = <STM32_PINMUX('A', 1, ANALOG)>, /* ETH1_CLK */
@@ -464,7 +546,13 @@
     fdcan1_sleep_pins_mx: fdcan1_sleep_mx-0 {
         pins {
             pinmux = <STM32_PINMUX('H', 13, ANALOG)>, /* FDCAN1_TX */
-                     <STM32_PINMUX('H', 14, ANALOG)>; /* FDCAN1_RX */
+                     <STM32_PINMUX('I', 9, ANALOG)>; /* FDCAN1_RX */
+        };
+    };
+    fdcan2_sleep_pins_mx: fdcan2_sleep_mx-0 {
+        pins {
+            pinmux = <STM32_PINMUX('B', 6, ANALOG)>, /* FDCAN2_TX */
+                     <STM32_PINMUX('B', 5, ANALOG)>; /* FDCAN2_RX */
         };
     };
     fmc_sleep_pins_mx: fmc_sleep_mx-0 {
@@ -766,6 +854,16 @@
     /* USER CODE END m_can1 */
 };
 
+&m_can2{
+    pinctrl-names = "default", "sleep";
+    pinctrl-0 = <&fdcan2_pins_mx>;
+    pinctrl-1 = <&fdcan2_sleep_pins_mx>;
+    status = "okay";
+
+    /* USER CODE BEGIN m_can2 */
+    /* USER CODE END m_can2 */
+};
+
 &iwdg2{
     status = "okay";
 
@@ -956,6 +1054,22 @@
     /* USER CODE END sdmmc2 */
 };
 
+&sdmmc3{
+    u-boot,dm-pre-reloc;
+    pinctrl-names = "default";
+    pinctrl-0 = <&sdmmc3_pins_mx>;
+    status = "okay";
+
+    /* USER CODE BEGIN sdmmc3 */
+    non-removable;
+	st,neg-edge;
+	bus-width = <4>;
+	max-frequency = <25000000>;
+	vmmc-supply = <&v3v3>;
+    vmmc-supply = <&reg_wifi>;
+    keep-power-in-suspend;
+    /* USER CODE END sdmmc3 */
+};
 &uart4{
     u-boot,dm-pre-reloc;
     pinctrl-names = "default", "sleep";
@@ -967,6 +1081,27 @@
     /* USER CODE END uart4 */
 };
 
+&usart1{
+    u-boot,dm-pre-reloc;
+    pinctrl-names = "default";
+    pinctrl-0 = <&usart1_pins_mx>;
+    linux,rs485-enabled-at-boot-time;
+    status = "okay";
+
+    /* USER CODE BEGIN usart1 */
+    /* USER CODE END usart1 */
+};
+/* Bluetooth     */
+&usart3{
+    pinctrl-names = "default";
+    pinctrl-0 = <&usart3_pins_mx>;
+    vmmc-supply = <&reg_bl>;
+    st,hw-flow-ctrl;
+    status = "okay";
+	
+    /* USER CODE BEGIN usart3 */
+    /* USER CODE END usart3 */
+};
 &usbh_ehci{
     status = "okay";
 
