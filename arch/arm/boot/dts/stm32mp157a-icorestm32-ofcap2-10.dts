@@ -190,17 +190,6 @@
         regulator-always-on;
 	};
 
-	reg_bl: regulator-bt {
-		compatible = "regulator-fixed";
-		regulator-name = "bt";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpiod 3 1>;
-		startup-delay-us = <100>;
-        enable-active-high;
-        regulator-always-on;
-	};
-
 	/* USER CODE BEGIN root */
 	
 	sram: sram@10050000 {
@@ -1018,7 +1007,7 @@
     pinctrl-names = "default", "sleep";
     pinctrl-0 = <&sdmmc2_pins_mx>;
     pinctrl-1 = <&sdmmc2_sleep_pins_mx>;
-    status = "disabled";
+    status = "okay";
 
     /* USER CODE BEGIN sdmmc2 */  
     non-removable;
@@ -1045,7 +1034,6 @@
 	max-frequency = <25000000>;
 	vmmc-supply = <&v3v3>;
     vmmc-supply = <&reg_wifi>;
-    vmmc-supply = <&reg_bl>;
     keep-power-in-suspend;
     /* USER CODE END sdmmc3 */
 };
