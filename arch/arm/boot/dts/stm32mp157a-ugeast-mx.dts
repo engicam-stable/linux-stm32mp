@@ -779,6 +779,12 @@
 	status = "okay";
 };
 
+&usbh_ohci {
+	phys = <&usbphyc_port0>;
+	phy-names = "usb";
+	status = "okay";
+};
+
 &usbotg_hs {
 	dr_mode = "host";
 	force-b-session-valid;
