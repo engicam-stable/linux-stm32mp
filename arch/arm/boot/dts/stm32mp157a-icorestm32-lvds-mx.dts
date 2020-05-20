@@ -183,7 +183,7 @@
 		regulator-name = "wifi";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		gpio = <&gpioi 4 1>;
+		gpio = <&gpiod 3 1>;
 		startup-delay-us = <100>;
         enable-active-high;
         regulator-always-on;
@@ -194,7 +194,7 @@
 		regulator-name = "bt";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		gpio = <&gpioi 0 1>;
+		gpio = <&gpioh 14 1>;
 		startup-delay-us = <100>;
         enable-active-high;
         regulator-always-on;
@@ -217,10 +217,10 @@
     aliases {
 		ethernet0 = &ethernet0;
 		serial0 = &uart4; /*LINUX CONSOLE*/
-		serial1 = &uart8;
-		serial2 = &usart3; /*Bluetooth*/
+		serial1 = &usart1; /*RS232*/
+		serial2 = &usart3; /*RS485 */
 		serial3 = &uart7;
-		serial4 = &usart1; /*RS485*/
+		serial4 = &uart8; 
 	};
 
 	usb_phy_tuning: usb-phy-tuning {
@@ -448,7 +448,7 @@
 						 <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
 						 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
 						 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
-						 <STM32_PINMUX('D', 3, AF9)>; /* SDMMC2_D7 */
+						 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
 					slew-rate = <3>;
 					drive-push-pull;
 					bias-pull-up;
@@ -474,7 +474,7 @@
                 bias-pull-up;
         };
         pins2 {
-                pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC2_CK */
+                pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
                 slew-rate = <0>;
                 drive-push-pull;
                 bias-pull-down;
@@ -495,34 +495,17 @@
             bias-disable;
         };
     };
-    usart1_pins_mx: usart1_mx-0 {
-        u-boot,dm-pre-reloc;
-        pins1 {
-            u-boot,dm-pre-reloc;
-            pinmux = <STM32_PINMUX('Z', 1, AF7)>; /* USART1_RX */
-            bias-disable;
-        };
-        pins2 {
-            u-boot,dm-pre-reloc;
-            pinmux = <STM32_PINMUX('Z', 2, AF7)>, /* USART1_TX */
-                     <STM32_PINMUX('E', 14, GPIO)>; /* USART1_RTS */
-            bias-disable;
-            drive-push-pull;
-            slew-rate = <0>;
-        };
-    };
     usart3_pins_mx: usart3_mx-0 {
         u-boot,dm-pre-reloc;
         pins1 {
             u-boot,dm-pre-reloc;
-            pinmux = <STM32_PINMUX('B', 12, AF8)>, /* USART3_RX */
-                     <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
+            pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
             bias-disable;
         };
         pins2 {
             u-boot,dm-pre-reloc;
             pinmux = <STM32_PINMUX('B', 10, AF7)>, /* USART3_TX */
-                     <STM32_PINMUX('I', 10, AF8)>; /* USART3_CTS */
+                     <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
             bias-disable;
             drive-push-pull;
             slew-rate = <0>;
@@ -619,7 +602,7 @@
                      <STM32_PINMUX('B', 4, ANALOG)>, /* SDMMC2_D3 */
                      <STM32_PINMUX('B', 14, ANALOG)>, /* SDMMC2_D0 */
                      <STM32_PINMUX('B', 15, ANALOG)>, /* SDMMC2_D1 */
-                     <STM32_PINMUX('D', 3, ANALOG)>, /* SDMMC2_D7 */
+                     <STM32_PINMUX('C', 7, ANALOG)>, /* SDMMC2_D7 */
                      <STM32_PINMUX('E', 3, ANALOG)>, /* SDMMC2_CK */
                      <STM32_PINMUX('E', 5, ANALOG)>, /* SDMMC2_D6 */
                      <STM32_PINMUX('G', 6, ANALOG)>; /* SDMMC2_CMD */
@@ -700,6 +683,21 @@
         pins {
             pinmux = <STM32_PINMUX('Z', 7, ANALOG)>, /* I2C6_SDA */
                      <STM32_PINMUX('Z', 6, ANALOG)>; /* I2C6_SCL */
+        };
+    };
+    usart1_pins_mx: usart1_mx-0 {
+        u-boot,dm-pre-reloc;
+        pins1 {
+            u-boot,dm-pre-reloc;
+            pinmux = <STM32_PINMUX('Z', 1, AF7)>; /* USART1_RX */
+            bias-disable;
+        };
+        pins2 {
+            u-boot,dm-pre-reloc;
+            pinmux = <STM32_PINMUX('Z', 2, AF7)>; /* USART1_TX */
+            bias-disable;
+            drive-push-pull;
+            slew-rate = <0>;
         };
     };
 };
@@ -1079,23 +1077,22 @@
     /* USER CODE BEGIN uart4 */
     /* USER CODE END uart4 */
 };
-
+/* RS232     */
 &usart1{
     u-boot,dm-pre-reloc;
     pinctrl-names = "default";
     pinctrl-0 = <&usart1_pins_mx>;
-    linux,rs485-enabled-at-boot-time;
     status = "okay";
 
     /* USER CODE BEGIN usart1 */
     /* USER CODE END usart1 */
 };
-/* Bluetooth     */
+/* RS485     */
 &usart3{
     pinctrl-names = "default";
     pinctrl-0 = <&usart3_pins_mx>;
     vmmc-supply = <&reg_bl>;
-    st,hw-flow-ctrl;
+    linux,rs485-enabled-at-boot-time;
     status = "okay";
 	
     /* USER CODE BEGIN usart3 */
