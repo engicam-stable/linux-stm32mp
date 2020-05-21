@@ -809,7 +809,7 @@
         ti,height-mm = <93>;
 		enable-gpios = <&gpiof 15  GPIO_ACTIVE_HIGH>;
 //        pinctrl-names = "default";
-//        pinctrl-0 = <&pinctrl_bridge_lvds>;
+        pinctrl-0 = <&pinctrl_bridge_lvds>;
         status = "okay";
 
        display-timings {
