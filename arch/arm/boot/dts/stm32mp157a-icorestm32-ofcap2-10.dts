@@ -6,7 +6,7 @@
 
 /dts-v1/;
 #include "stm32mp157c.dtsi"
-#include "stm32mp157cac-pinctrl.dtsi"
+#include "stm32mp157caa-pinctrl.dtsi"
 #include "stm32mp157c-m4-srm.dtsi"
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
@@ -190,6 +190,16 @@
         regulator-always-on;
 	};
 
+	reg_bl: regulator-bt {
+		compatible = "regulator-fixed";
+		regulator-name = "bt";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpiod 3 1>;
+		startup-delay-us = <100>;
+        enable-active-high;
+        regulator-always-on;
+	};
 	/* USER CODE BEGIN root */
 	
 	sram: sram@10050000 {
@@ -440,7 +450,7 @@
 						 <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
 						 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
 						 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
-						 <STM32_PINMUX('D', 3, AF9)>; /* SDMMC2_D7 */
+						 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
 					slew-rate = <3>;
 					drive-push-pull;
 					bias-pull-up;
@@ -534,6 +544,12 @@
                      <STM32_PINMUX('H', 14, ANALOG)>; /* FDCAN1_RX */
         };
     };
+    fdcan2_sleep_pins_mx: fdcan2_sleep_mx-0 {
+        pins {
+            pinmux = <STM32_PINMUX('B', 6, ANALOG)>, /* FDCAN2_TX */
+                     <STM32_PINMUX('B', 5, ANALOG)>; /* FDCAN2_RX */
+        };
+    };
     fmc_sleep_pins_mx: fmc_sleep_mx-0 {
         u-boot,dm-pre-reloc;
         pins {
@@ -599,7 +615,7 @@
                      <STM32_PINMUX('B', 4, ANALOG)>, /* SDMMC2_D3 */
                      <STM32_PINMUX('B', 14, ANALOG)>, /* SDMMC2_D0 */
                      <STM32_PINMUX('B', 15, ANALOG)>, /* SDMMC2_D1 */
-                     <STM32_PINMUX('D', 3, ANALOG)>, /* SDMMC2_D7 */
+                     <STM32_PINMUX('C', 7, ANALOG)>, /* SDMMC2_D7 */
                      <STM32_PINMUX('E', 3, ANALOG)>, /* SDMMC2_CK */
                      <STM32_PINMUX('E', 5, ANALOG)>, /* SDMMC2_D6 */
                      <STM32_PINMUX('G', 6, ANALOG)>; /* SDMMC2_CMD */
@@ -782,6 +798,7 @@
         ti,width-mm = <149>;
         ti,height-mm = <93>;
 		enable-gpios = <&gpiof 15  GPIO_ACTIVE_HIGH>;
+        pinctrl-0 = <&pinctrl_bridge_lvds>;
         status = "okay";
 
       display-timings {
@@ -826,6 +843,7 @@
 &m_can2{
     pinctrl-names = "default";
     pinctrl-0 = <&fdcan2_pins_mx>;
+    pinctrl-1 = <&fdcan2_sleep_pins_mx>;
     status = "okay";
 
     /* USER CODE BEGIN m_can2 */
