@@ -208,7 +208,17 @@
         enable-active-high;
         regulator-always-on;
 	};
-	
+
+	gpio_export {
+		compatible = "gpio-export";
+		#size-cells = <0>;
+		gpio-overvoltage {
+			gpio-export,name = "GPIO-OVERVOLTAGE";
+			gpio-export,output = <0>;
+			gpios = <&gpiof 11 0>;
+		};
+	};	
+
 	/* USER CODE BEGIN root */
 	
 	sram: sram@10050000 {
@@ -896,6 +906,7 @@
 	recovery;
 	status = "okay";
 };
+
 
 
 /* USER CODE END addons */
