@@ -1,0 +1,17 @@
+.config
+*.o
+*.S
+*.map
+*.cmd
+*.a
+*.tmp
+*.dtb
+include/config
+include/generated
+/.missing-syscalls.d
+/.tmp_vmlinux1
+/.tmp_vmlinux2
+/.version
+/Module.symvers
+/modules.builtin.modinfo
+/vmlinux

@@ -1,3 +1,5 @@
 vdso.lds
 vdso.so.raw
 vdsomunge
+/vdso.so
+/vdso.so.dbg

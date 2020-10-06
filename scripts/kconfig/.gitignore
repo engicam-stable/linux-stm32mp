@@ -12,3 +12,6 @@ mconf
 nconf
 qconf
 gconf
+/lexer.lex.c
+/parser.tab.c
+/parser.tab.h

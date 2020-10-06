@@ -4,3 +4,5 @@
 kheaders.md5
 timeconst.h
 hz.bc
+/bounds.s
+/config_data.gz

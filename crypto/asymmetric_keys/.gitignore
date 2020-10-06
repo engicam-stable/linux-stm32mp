@@ -1,0 +1,6 @@
+/pkcs7.asn1.c
+/pkcs7.asn1.h
+/x509.asn1.c
+/x509.asn1.h
+/x509_akid.asn1.c
+/x509_akid.asn1.h
