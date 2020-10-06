@@ -240,6 +240,16 @@
 #endif	/*CONFIG_STM32MP1_TRUSTED*/
 	};
 
+	gpio_export {
+		compatible = "gpio-export";
+		#size-cells = <0>;
+		gpio-overvoltage {
+			gpio-export,name = "GPIO-OVERVOLTAGE";
+			gpio-export,output = <0>;
+			gpios = <&gpiof 11 0>;
+		};
+	};
+	
 }; /*root*/
 
 &pinctrl {
