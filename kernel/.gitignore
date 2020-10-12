@@ -6,3 +6,4 @@ timeconst.h
 hz.bc
 /bounds.s
 /config_data.gz
+/config_data.h

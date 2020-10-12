@@ -15,3 +15,8 @@ include/generated
 /Module.symvers
 /modules.builtin.modinfo
 /vmlinux
+*.mod
+*.mod.*
+*.ko
+*.builtin
+*.order
