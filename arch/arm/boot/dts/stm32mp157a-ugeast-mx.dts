@@ -302,7 +302,7 @@
 	eth_res: eth_res-0 {
 			pins {
 					pinmux = <STM32_PINMUX('A', 13, GPIO)>;
-					bias-pull-up;
+          bias-disable;
 					drive-push-pull;
 					output-high;
 					slew-rate = <0>;
@@ -808,7 +808,7 @@
 	max-speed = <100>;
 	phy-handle = <&phy0>;
 	snps,ps-speed = <100>;
-    st,eth_ref_clk_sel;
+  st,eth-ref-clk-sel = <1>;
 	status = "okay";
 
     clock-names = "stmmaceth",
@@ -826,17 +826,17 @@
             <&rcc ETHCK_K>;
 
     mdio0 {
-		#address-cells = <1>;
-		#size-cells = <0>;
-		compatible = "snps,dwmac-mdio";
-		snps,reset-gpio = <&gpioa 13 0>;
-		snps,reset-delays-us = <25>;
-		snps,reset-active-low;
+    #address-cells = <1>;
+    #size-cells = <0>;
+    compatible = "snps,dwmac-mdio";
+    snps,reset-gpio = <&gpioa 13 0>;
+    snps,reset-delays-us = <25>;
+    snps,reset-active-low;
 
-		phy0: ethernet-phy-0 {
-			reg = <0>;
-		};
-	};
+    phy0: ethernet-phy-0 {
+      reg = <0>;
+    };
+  };
 };
 
 &fmc {
