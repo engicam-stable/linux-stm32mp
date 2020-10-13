@@ -39,10 +39,21 @@
 		serial3 = &uart7;
 		serial4 = &usart1;
 	};
-
-	chosen {
-		stdout-path = "serial0:115200n8";
+  
+	usb_phy_tuning: usb-phy-tuning {
+		st,hs-dc-level = <2>;
+		st,fs-rftime-tuning;
+		st,hs-rftime-reduction;
+		st,hs-current-trim = <15>;
+		st,hs-impedance-trim = <1>;
+		st,squelch-level = <3>;
+		st,hs-rx-offset = <2>;
+		st,no-lsfs-sc;
 	};
+  
+	/*chosen {
+		stdout-path = "serial0:115200n8";
+	};*/
 
 
 	memory@c0000000 {
@@ -1106,50 +1117,38 @@
 	/* USER CODE END usart6 */
 };
 
-&usbh_ehci{
+&usbh_ehci {
+	phys = <&usbphyc_port0>;
+	phy-names = "usb";
 	status = "okay";
-
-	/* USER CODE BEGIN usbh_ehci */
-	/* USER CODE END usbh_ehci */
 };
 
-&usbh_ohci{
-	status = "disabled";
-
-	/* USER CODE BEGIN usbh_ohci */
-	/* USER CODE END usbh_ohci */
-};
-
-&usbotg_hs{
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&usb_otg_hs_pins_mx>;
-//	pinctrl-1 = <&usb_otg_hs_sleep_pins_mx>;
-	status = "disabled";
-
-	/* USER CODE BEGIN usbotg_hs */
-	/* USER CODE END usbotg_hs */
-};
-
-&usbphyc{
+&usbh_ohci {
+	phys = <&usbphyc_port0>;
+	phy-names = "usb";
 	status = "okay";
-
-	/* USER CODE BEGIN usbphyc */
-	/* USER CODE END usbphyc */
 };
 
-&usbphyc_port0{
+&usbotg_hs {
+	dr_mode = "host";
+	force-b-session-valid;
+	phys = <&usbphyc_port1 0>;
+	phy-names = "usb2-phy";
 	status = "okay";
-
-	/* USER CODE BEGIN usbphyc_port0 */
-	/* USER CODE END usbphyc_port0 */
 };
 
-&usbphyc_port1{
+&usbphyc {
 	status = "okay";
-
-	/* USER CODE BEGIN usbphyc_port1 */
-	/* USER CODE END usbphyc_port1 */
 };
+
+&usbphyc_port0 {
+	st,phy-tuning = <&usb_phy_tuning>;
+};
+
+&usbphyc_port1 {
+	st,phy-tuning = <&usb_phy_tuning>;
+};
+
 /* USER CODE BEGIN addons */
 &cpu0{
 	cpu-supply = <&vddcore>;
