@@ -997,8 +997,9 @@ dtb-$(CONFIG_ARCH_STM32) += \
 	stm32mp157f-dk2-a7-examples.dtb \
 	stm32mp157f-dk2-m4-examples.dtb \
 	stm32mp157a-ugeast-mx.dtb \
-	stm32mp157a-ugeast-mx-wip.dtb \
-	stm32mp157a-ugeast-mx-wip-all-peripherals.dtb \
+	stm32mp157a-ugeast-mx-lcd7.dtb \
+	stm32mp157a-ugeast-mx-lcd10.dtb \
+	stm32mp157a-ugeast-mx-m4.dtb \
 	stm32mp157a-ed1.dtb \
 	stm32mp157c-ed1.dtb \
 	stm32mp157d-ed1.dtb \
