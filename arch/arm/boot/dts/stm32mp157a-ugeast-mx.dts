@@ -291,16 +291,6 @@
 		};
 	};
 
-	i2c4_pins_mx: i2c4_mx-0 {
-		pins {
-			pinmux = <STM32_PINMUX('H', 11, AF4)>, /* I2C4_SCL */
-						<STM32_PINMUX('H', 12, AF4)>; /* I2C4_SDA */
-			bias-disable;
-			drive-open-drain;
-			slew-rate = <0>;
-		};
-	};
-
 	rtc_pins_mx: rtc_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('I', 8, ANALOG)>; /* RTC_LSCO */
@@ -440,12 +430,7 @@
 			bias-disable;
 		};
 	};
-	i2c2_sleep_pins_mx: i2c2_sleep_mx-0 {
-			pins {
-					pinmux = <STM32_PINMUX('H', 4, ANALOG)>, /* I2C2_SCL */
-									 <STM32_PINMUX('H', 5, ANALOG)>; /* I2C2_SDA */
-			};
-	};
+
 	i2c4_sleep_pins_mx: i2c4_sleep_mx-0 {
 			pins {
 					pinmux = <STM32_PINMUX('H', 11, ANALOG)>, /* I2C4_SCL */
@@ -602,19 +587,10 @@
 /* USER CODE END i2c2 */
 };
 
-&i2c4 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c4_pins_mx>;
-	status = "okay";
-
-/* USER CODE BEGIN i2c4 */
-/* USER CODE END i2c4 */
-};
-
 &m_can1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&fdcan1_pins_mx>;
-	status = "okay";
+	status = "disabled";
 
 /* USER CODE BEGIN m_can1 */
 /* USER CODE END m_can1 */
@@ -654,13 +630,13 @@
 &sai2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&sai2b_pins_mx>;
-	status = "okay";
+	status = "disabled";
 
 /* USER CODE BEGIN sai2 */
 /* USER CODE END sai2 */
 
 	sai2b:audio-controller@4400b024{
-		status = "okay";
+		status = "disabled";
 
 /* USER CODE BEGIN sai2b */
 /* USER CODE END sai2b */
@@ -705,7 +681,7 @@
 &uart7{
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart7_pins_mx>;
-	status = "okay";
+	status = "disable";
 
 	/* USER CODE BEGIN uart7 */
 	/* USER CODE END uart7 */
@@ -734,7 +710,7 @@
 	u-boot,dm-pre-reloc;
 	pinctrl-names = "default";
 	pinctrl-0 = <&usart3_pins_mx>;
-	status = "okay";
+	status = "disabled";
 
 	/* USER CODE BEGIN usart3 */
 	/* USER CODE END usart3 */
