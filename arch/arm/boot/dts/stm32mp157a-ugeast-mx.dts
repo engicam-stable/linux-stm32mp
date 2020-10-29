@@ -13,8 +13,10 @@
 
 #include "stm32mp157.dtsi"
 #include "stm32mp15xa.dtsi"
+#include "stm32mp15-pinctrl.dtsi"
 #include "stm32mp15xxac-pinctrl.dtsi"
 #include "stm32mp157-m4-srm.dtsi"
+#include "stm32mp157-m4-srm-pinctrl.dtsi"
 
 / {
 	model = "Engicam MicroGEA STM32MP1 microdev";
@@ -62,6 +64,42 @@
 			reg = <0xde000000 0x02000000>;
 			no-map;
 		};
+
+		mcuram2: mcuram2@10000000 {
+			compatible = "shared-dma-pool";
+			reg = <0x10000000 0x40000>;
+			no-map;
+		};
+		
+		vdev0vring0: vdev0vring0@10040000 {
+			compatible = "shared-dma-pool";
+			reg = <0x10040000 0x1000>;
+			no-map;
+		};
+		
+		vdev0vring1: vdev0vring1@10041000 {
+			compatible = "shared-dma-pool";
+			reg = <0x10041000 0x1000>;
+			no-map;
+		};
+		
+		vdev0buffer: vdev0buffer@10042000 {
+			compatible = "shared-dma-pool";
+			reg = <0x10042000 0x4000>;
+			no-map;		
+		};
+		
+		mcuram: mcuram@30000000 {
+			compatible = "shared-dma-pool";
+			reg = <0x30000000 0x40000>;
+			no-map;
+		};
+		
+		retram: retram@38000000 {
+			compatible = "shared-dma-pool";
+			reg = <0x38000000 0x10000>;
+			no-map;
+		};		
 	};
 
 
@@ -565,6 +603,7 @@
 };
 
 &gpu {
+	contiguous-area = <&gpu_reserved>;
 	status = "okay";
 
 /* USER CODE BEGIN gpu */
@@ -596,7 +635,14 @@
 /* USER CODE END m_can1 */
 };
 
-&mdma1 {
+&dma1 {
+	status = "okay";
+
+/* USER CODE BEGIN mdma1 */
+/* USER CODE END mdma1 */
+};
+
+&dma2 {
 	status = "okay";
 
 /* USER CODE BEGIN mdma1 */
