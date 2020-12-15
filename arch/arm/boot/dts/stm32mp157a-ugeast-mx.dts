@@ -213,6 +213,29 @@
 		enable-active-high;
 		regulator-always-on;
 	};
+
+	reg_wifi: regulator-wifi {
+		compatible = "regulator-fixed";
+		regulator-name = "wifi";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpiob 4 1>;
+		startup-delay-us = <100>;
+        enable-active-high;
+        regulator-always-on;
+	};
+
+	reg_bl: regulator-bt {
+		compatible = "regulator-fixed";
+		regulator-name = "bt";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		gpio = <&gpioa 0 1>;
+		startup-delay-us = <100>;
+        enable-active-high;
+        regulator-always-on;
+	};
+
 	/* USER CODE END root */
 
 	clocks {
@@ -395,6 +418,67 @@
 		};
 	};
 
+	sdmmc3_pins_mx: sdmmc3_mx-0 {
+	u-boot,dm-pre-reloc;
+		pins1 {
+			pinmux = <STM32_PINMUX('F', 0, AF9)>, /* SDMMC2_D0 */
+				    <STM32_PINMUX('F', 4, AF9)>, /* SDMMC2_D1 */
+				    <STM32_PINMUX('F', 5, AF9)>, /* SDMMC2_D2 */
+				    <STM32_PINMUX('D', 7, AF10)>, /* SDMMC2_D3 */
+				    <STM32_PINMUX('F', 1, AF9)>; /* SDMMC2_CMD */
+			slew-rate = <0>;
+			drive-push-pull;
+			bias-pull-up;
+		};
+		pins2 {
+			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC2_CK */
+			slew-rate = <0>;
+			drive-push-pull;
+			bias-pull-down;
+		};
+	};
+
+	sdmmc3_opendrain_pins_mx: sdmmc3_opendrain_mx-0 {
+		u-boot,dm-pre-reloc;
+		pins1 {
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('F', 0, AF9)>, /* SDMMC2_D0 */
+				    <STM32_PINMUX('F', 4, AF9)>, /* SDMMC2_D1 */
+				    <STM32_PINMUX('F', 5, AF9)>, /* SDMMC2_D2 */
+				    <STM32_PINMUX('D', 7, AF10)>; /* SDMMC2_D3 */
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+		pins2 {
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC2_CK */
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+		pins3 {
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('F', 1, AF9)>; /* SDMMC2_CMD */
+			bias-disable;
+			drive-open-drain;
+			slew-rate = <0>;
+		};
+	};
+
+//        pinctrl_laird: lairdgrp {
+//			u-boot,dm-pre-reloc;
+//		pins1 {
+
+//			pinmux = <STM32_PINMUX('B', 4, GPIO)>, /* WL_REG_ON */
+//				    <STM32_PINMUX('A', 0, GPIO)>; /* BT_REG_ON */
+//			bias-disable;
+			//drive-push-pull;
+			//output-high;
+			//slew-rate = <0>;
+//		};
+//       };
+
 	uart4_pins_mx: uart4_mx-0 {
 		u-boot,dm-pre-reloc;
 		pins1 {
@@ -412,12 +496,17 @@
 	};
 
 	uart7_pins_mx: uart7_mx-0 {
+		u-boot,dm-pre-reloc;
 		pins1 {
-			pinmux = <STM32_PINMUX('B', 3, AF13)>; /* UART7_RX */
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('F', 6, AF7)>, /* USART7_RX */
+			     	 <STM32_PINMUX('F', 8, AF7)>; /* USART7_RTS */
 			bias-disable;
 		};
 		pins2 {
-			pinmux = <STM32_PINMUX('B', 4, AF13)>; /* UART7_TX */
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('F', 7, AF7)>, /* USART7_TX */
+			     	 <STM32_PINMUX('F', 9, AF7)>; /* USART7_CTS */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <0>;
@@ -441,15 +530,18 @@
 		u-boot,dm-pre-reloc;
 		pins1 {
 			u-boot,dm-pre-reloc;
-			pinmux = <STM32_PINMUX('B', 10, AF7)>; /* USART3_TX */
+			pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <0>;
 		};
 		pins2 {
 			u-boot,dm-pre-reloc;
-			pinmux = <STM32_PINMUX('B', 12, AF8)>; /* USART3_RX */
+			pinmux = <STM32_PINMUX('D', 8, AF7)>, /* USART3_TX */
+			     	 <STM32_PINMUX('G', 8, AF8)>; /* USART3_RTS */
 			bias-disable;
+			drive-push-pull;
+			slew-rate = <0>;
 		};
 	};
 
@@ -706,6 +798,34 @@
 /* USER CODE END sdmmc1 */
 };
 
+&sdmmc3{
+	#address-cells = <1>;
+	#size-cells = <0>;
+	u-boot,dm-pre-reloc;
+	arm,primecell-periphid = <0x10153180>;
+	pinctrl-names = "default", "opendrain";
+	pinctrl-0 = <&sdmmc3_pins_mx>;
+	pinctrl-1 = <&sdmmc3_opendrain_pins_mx>;
+	status = "okay";
+
+	/* USER CODE BEGIN sdmmc3 */
+	non-removable;
+	st,neg-edge;
+	bus-width = <4>;
+	max-frequency = <25000000>;
+	vmmc-supply = <&v3v3>;
+	vmmc-supply = <&reg_wifi>;
+	//mmc-pwrseq = <&reg_wifi>;
+	keep-power-in-suspend;
+
+		brcmf: wifi@1 {
+			compatible = "brcm,bcm4329-fmac";
+			reg = <1>;
+		};
+
+	/* USER CODE END sdmmc3 */
+};
+
 &tamp{
 	status = "okay";
 
@@ -713,7 +833,7 @@
 /* USER CODE END tamp */
 };
 
-
+/* linux console */
 &uart4{
 	u-boot,dm-pre-reloc;
 	pinctrl-names = "default";
@@ -724,15 +844,20 @@
 	/* USER CODE END uart4 */
 };
 
+/* Bluetooth */
 &uart7{
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart7_pins_mx>;
-	status = "disable";
+    	vmmc-supply = <&reg_bl>;
+    	linux,rs485-enabled-at-boot-time;
+    	/*st,hw-flow-ctrl;*/
+	status = "okay";
 
 	/* USER CODE BEGIN uart7 */
 	/* USER CODE END uart7 */
 };
 
+/*  RS232 */
 &uart8{
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart8_pins_mx>;
@@ -742,6 +867,7 @@
 	/* USER CODE END uart8 */
 };
 
+/* expansion connector */
 &usart1{
 	u-boot,dm-pre-reloc;
 	pinctrl-names = "default";
@@ -752,11 +878,13 @@
 	/* USER CODE END usart1 */
 };
 
+/*  RS485 */
 &usart3{
 	u-boot,dm-pre-reloc;
 	pinctrl-names = "default";
 	pinctrl-0 = <&usart3_pins_mx>;
-	status = "disabled";
+	linux,rs485-enabled-at-boot-time;
+	status = "okay";
 
 	/* USER CODE BEGIN usart3 */
 	/* USER CODE END usart3 */
@@ -766,7 +894,7 @@
 	u-boot,dm-pre-reloc;
 	pinctrl-names = "default";
 	pinctrl-0 = <&usart6_pins_mx>;
-	status = "okay";
+	status = "disabled";
 
 	/* USER CODE BEGIN usart6 */
 	/* USER CODE END usart6 */
@@ -815,5 +943,19 @@
 
 &optee {
 	status = "okay";
+};
+
+&m4_rproc{
+	status = "okay";
+
+	/* USER CODE BEGIN m4_rproc */
+	/* USER CODE END m4_rproc */
+
+	m4_system_resources{
+		status = "okay";
+
+		/* USER CODE BEGIN m4_system_resources */
+		/* USER CODE END m4_system_resources */
+	};
 };
 /* USER CODE END addons */
