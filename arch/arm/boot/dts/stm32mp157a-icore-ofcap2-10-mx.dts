@@ -80,36 +80,36 @@
 			reg = <0x10000000 0x40000>;
 			no-map;
 		};
-		
+
 		vdev0vring0: vdev0vring0@10040000 {
 			compatible = "shared-dma-pool";
 			reg = <0x10040000 0x1000>;
 			no-map;
 		};
-		
+
 		vdev0vring1: vdev0vring1@10041000 {
 			compatible = "shared-dma-pool";
 			reg = <0x10041000 0x1000>;
 			no-map;
 		};
-		
+
 		vdev0buffer: vdev0buffer@10042000 {
 			compatible = "shared-dma-pool";
 			reg = <0x10042000 0x4000>;
-			no-map;		
+			no-map;
 		};
-		
+
 		mcuram: mcuram@30000000 {
 			compatible = "shared-dma-pool";
 			reg = <0x30000000 0x40000>;
 			no-map;
 		};
-		
+
 		retram: retram@38000000 {
 			compatible = "shared-dma-pool";
 			reg = <0x38000000 0x10000>;
 			no-map;
-		};		
+		};
 	};
 
 	/* USER CODE BEGIN root */
@@ -452,17 +452,11 @@ reg_bl: regulator-bt {
 				 <STM32_PINMUX('A', 8, AF9)>, /* SDMMC2_D4 */
 				 <STM32_PINMUX('A', 9, AF10)>, /* SDMMC2_D5 */
 				 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
-				 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
+				 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
+				 <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
 			slew-rate = <3>;
 			drive-push-pull;
 			bias-pull-up;
-		};
-		pins2 {
-			u-boot,dm-pre-reloc;
-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <3>;
 		};
 	};
 
@@ -476,46 +470,62 @@ reg_bl: regulator-bt {
 					 <STM32_PINMUX('B', 4, AF9)>, /* SDMMC2_D3 */
 					 <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
 					 <STM32_PINMUX('B', 15, AF9)>, /* SDMMC2_D1 */
+					 <STM32_PINMUX('C', 7, AF10)>, /* SDMMC2_D7 */
 					 <STM32_PINMUX('E', 5, AF9)>, /* SDMMC2_D6 */
-					 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
-			bias-disable;
+					 <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <1>;
 		};
 		pins2 {
 			u-boot,dm-pre-reloc;
-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <3>;
-		};
-		pins3 {
-			u-boot,dm-pre-reloc;
 			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
-			bias-disable;
+			bias-pull-up;
 			drive-open-drain;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 	};
 
 	sdmmc3_pins_mx: sdmmc3_mx-0 {
 			u-boot,dm-pre-reloc;
 			pins1 {
-				pinmux = <STM32_PINMUX('F', 0, AF9)>, /* SDMMC3_D0 */
-					<STM32_PINMUX('F', 4, AF9)>, /* SDMMC3_D1 */
-					<STM32_PINMUX('F', 5, AF9)>, /* SDMMC3_D2 */
-					<STM32_PINMUX('D', 7, AF10)>, /* SDMMC3_D3 */
-					<STM32_PINMUX('F', 1, AF9)>; /* SDMMC3_CMD */
-				slew-rate = <0>;
-				drive-push-pull;
-				bias-pull-up;
+							pinmux = <STM32_PINMUX('F', 0, AF9)>, /* SDMMC3_D0 */
+													<STM32_PINMUX('F', 4, AF9)>, /* SDMMC3_D1 */
+													<STM32_PINMUX('F', 5, AF9)>, /* SDMMC3_D2 */
+													<STM32_PINMUX('D', 7, AF10)>, /* SDMMC3_D3 */
+													<STM32_PINMUX('F', 1, AF9)>; /* SDMMC3_CMD */
+							slew-rate = <0>;
+							drive-push-pull;
+							bias-pull-up;
 			};
 			pins2 {
-				pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
-				slew-rate = <0>;
-				drive-push-pull;
-				bias-pull-down;
+							pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
+							slew-rate = <0>;
+							drive-push-pull;
+							bias-pull-down;
 			};
+	};
+
+	sdmmc3_opendrain_pins_mx: sdmmc3_opendrain_mx-0 {
+		u-boot,dm-pre-reloc;
+		pins1 {
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('F', 0, AF9)>, /* SDMMC3_D0 */
+				<STM32_PINMUX('F', 4, AF9)>, /* SDMMC3_D1 */
+				<STM32_PINMUX('F', 5, AF9)>, /* SDMMC3_D2 */
+				<STM32_PINMUX('D', 7, AF10)>, /* SDMMC3_D3 */
+				<STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
+			bias-pull-up;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+		pins2 {
+			u-boot,dm-pre-reloc;
+			pinmux = <STM32_PINMUX('F', 1, AF9)>; /* SDMMC3_CMD */
+			bias-disable;
+			drive-open-drain;
+			slew-rate = <1>;
+		};
 	};
 
 	uart4_pins_mx: uart4_mx-0 {
@@ -875,18 +885,29 @@ reg_bl: regulator-bt {
 	vmmc-supply = <&v3v3>;
 };
 
-&sdmmc2{
+&sdmmc2 {
 	u-boot,dm-pre-reloc;
 	pinctrl-names = "default", "opendrain";
 	pinctrl-0 = <&sdmmc2_pins_mx>;
 	pinctrl-1 = <&sdmmc2_opendrain_pins_mx>;
 	status = "okay";
+
+	no-1-8-v;
+	non-removable;
+	no-sd;
+	no-sdio;
+	st,neg-edge;
+	bus-width = <8>;
+	vmmc-supply = <&v3v3>;
+	vqmmc-supply = <&v3v3>;
+	max-frequency = <50000000>;
 };
 
 &sdmmc3{
 	u-boot,dm-pre-reloc;
-	pinctrl-names = "default";
+	pinctrl-names = "default", "opendrain";
 	pinctrl-0 = <&sdmmc3_pins_mx>;
+	pinctrl-1 = <&sdmmc3_opendrain_pins_mx>;
 	status = "okay";
 
 	non-removable;
