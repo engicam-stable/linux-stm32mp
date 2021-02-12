@@ -10,6 +10,7 @@
 
 /dts-v1/;
 #include <dt-bindings/pinctrl/stm32-pinfunc.h>
+#include <dt-bindings/rtc/rtc-stm32.h>
 
 #include "stm32mp157.dtsi"
 #include "stm32mp15xa.dtsi"
@@ -70,36 +71,36 @@
 			reg = <0x10000000 0x40000>;
 			no-map;
 		};
-		
+
 		vdev0vring0: vdev0vring0@10040000 {
 			compatible = "shared-dma-pool";
 			reg = <0x10040000 0x1000>;
 			no-map;
 		};
-		
+
 		vdev0vring1: vdev0vring1@10041000 {
 			compatible = "shared-dma-pool";
 			reg = <0x10041000 0x1000>;
 			no-map;
 		};
-		
+
 		vdev0buffer: vdev0buffer@10042000 {
 			compatible = "shared-dma-pool";
 			reg = <0x10042000 0x4000>;
-			no-map;		
+			no-map;
 		};
-		
+
 		mcuram: mcuram@30000000 {
 			compatible = "shared-dma-pool";
 			reg = <0x30000000 0x40000>;
 			no-map;
 		};
-		
+
 		retram: retram@38000000 {
 			compatible = "shared-dma-pool";
 			reg = <0x38000000 0x10000>;
 			no-map;
-		};		
+		};
 	};
 
 
@@ -203,7 +204,7 @@
 		regulator-max-microvolt = <5000000>;
 		regulator-always-on;
 	};
-	
+
 	lcd_3v3: regulator-lcd_3v3 {
 		compatible = "regulator-fixed";
 		regulator-name = "lcd_3v3";
@@ -212,17 +213,6 @@
 		gpio = <&gpiof 10 0>;
 		enable-active-high;
 		regulator-always-on;
-	};
-
-	reg_wifi: regulator-wifi {
-		compatible = "regulator-fixed";
-		regulator-name = "wifi";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpio = <&gpiob 4 1>;
-		startup-delay-us = <100>;
-        enable-active-high;
-        regulator-always-on;
 	};
 
 	reg_bl: regulator-bt {
@@ -234,6 +224,13 @@
 		startup-delay-us = <100>;
         enable-active-high;
         regulator-always-on;
+	};
+
+	wifi_pwrseq: wifi-pwrseq {
+	compatible = "mmc-pwrseq-simple";
+	reset-gpios = <&gpiob 4 1>;
+	startup-delay-us = <10000>;
+	enable-active-high;
 	};
 
 	/* USER CODE END root */
@@ -434,7 +431,6 @@
 			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC2_CK */
 			slew-rate = <0>;
 			drive-push-pull;
-			bias-pull-down;
 		};
 	};
 
@@ -756,13 +752,12 @@
 /* USER CODE END rng1 */
 };
 
+/* RTC clock provides 32KHz to wifi sdmmc3*/
 &rtc {
 	pinctrl-names = "default";
 	pinctrl-0 = <&rtc_pins_mx>;
+	st,lsco = <RTC_OUT2_RMP>;
 	status = "okay";
-
-/* USER CODE BEGIN rtc */
-/* USER CODE END rtc */
 };
 
 &sai2 {
@@ -814,11 +809,10 @@
 	bus-width = <4>;
 	max-frequency = <25000000>;
 	vmmc-supply = <&v3v3>;
-	vmmc-supply = <&reg_wifi>;
-	//mmc-pwrseq = <&reg_wifi>;
-	keep-power-in-suspend;
+	mmc-pwrseq = <&wifi_pwrseq>;
+	//keep-power-in-suspend;
 
-		brcmf: wifi@1 {
+			brcmf: wifi@1 {
 			compatible = "brcm,bcm4329-fmac";
 			reg = <1>;
 		};
