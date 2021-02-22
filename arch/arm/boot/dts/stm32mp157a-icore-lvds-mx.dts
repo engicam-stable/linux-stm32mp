@@ -225,17 +225,6 @@
 		regulator-always-on;
 	};
 
-	reg_wifi: regulator-wifi {
-	compatible = "regulator-fixed";
-	regulator-name = "wifi";
-	regulator-min-microvolt = <3300000>;
-	regulator-max-microvolt = <3300000>;
-	gpio = <&gpiod 3 1>;
-	startup-delay-us = <100>;
-			enable-active-high;
-			regulator-always-on;
-};
-
 reg_bl: regulator-bt {
 	compatible = "regulator-fixed";
 	regulator-name = "bt";
@@ -245,6 +234,13 @@ reg_bl: regulator-bt {
 	startup-delay-us = <100>;
 			enable-active-high;
 			regulator-always-on;
+};
+
+wifi_pwrseq: wifi-pwrseq {
+compatible = "mmc-pwrseq-simple";
+reset-gpios = <&gpiod 3 1>;
+startup-delay-us = <10000>;
+enable-active-high;
 };
 
 	/* USER CODE END root */
@@ -491,7 +487,6 @@ reg_bl: regulator-bt {
 				pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
 				slew-rate = <0>;
 				drive-push-pull;
-				bias-pull-down;
 			};
 	};
 
@@ -902,19 +897,18 @@ reg_bl: regulator-bt {
 		#address-cells = <1>;
 		#size-cells = <0>;
     u-boot,dm-pre-reloc;
+		arm,primecell-periphid = <0x10153180>;
     pinctrl-names = "default", "opendrain";
     pinctrl-0 = <&sdmmc3_pins_mx>;
 		pinctrl-1 = <&sdmmc3_opendrain_pins_mx>;
     status = "okay";
 
-    broken-sg-support;
 		non-removable;
 		st,neg-edge;
 		bus-width = <4>;
 		max-frequency = <25000000>;
 		vmmc-supply = <&v3v3>;
-		vmmc-supply = <&reg_wifi>;
-		keep-power-in-suspend;
+		mmc-pwrseq = <&wifi_pwrseq>;
 
 		brcmf: wifi@1 {
 			compatible = "brcm,bcm4329-fmac";
