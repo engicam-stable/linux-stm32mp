@@ -119,7 +119,7 @@
 		compatible = "regulator-fixed";
 		regulator-name = "vddcore";
 		regulator-min-microvolt = <1200000>;
-		regulator-max-microvolt = <1200000>;
+		regulator-max-microvolt = <1350000>;
 		regulator-always-on;
 	};
 
@@ -977,14 +977,6 @@ enable-active-high;
 
 &usbphyc_port1 {
 	st,phy-tuning = <&usb_phy_tuning>;
-};
-
-&cpu0{
-	cpu-supply = <&vddcore>;
-};
-
-&cpu1{
-	cpu-supply = <&vddcore>;
 };
 
 &optee {
