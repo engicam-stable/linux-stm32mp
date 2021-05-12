@@ -925,7 +925,7 @@ enable-active-high;
 	compatible = "brcm,bcm4329-fmac";
 	reg = <1>;
 	};
-	
+
 };
 
 &tamp{
@@ -1000,5 +1000,9 @@ enable-active-high;
 };
 
 &optee {
+	status = "okay";
+};
+
+&dts {
 	status = "okay";
 };

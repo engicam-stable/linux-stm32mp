@@ -953,3 +953,6 @@
 	};
 };
 /* USER CODE END addons */
+&dts {
+	status = "okay";
+};
