@@ -270,7 +270,9 @@ enable-active-high;
 
 	panel_backlight: panel-backlight {
 		compatible = "gpio-backlight";
+		gpios = <&gpiod 13 GPIO_ACTIVE_HIGH>;
 		default-on;
+	  status="okay";
 	};
 }; /*root*/
 
@@ -798,6 +800,9 @@ enable-active-high;
 
 &ltdc {
 	status = "okay";
+
+	backlight = <&panel_backlight>;
+
 	port {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -980,5 +985,9 @@ enable-active-high;
 };
 
 &optee {
+	status = "okay";
+};
+
+&dts {
 	status = "okay";
 };
