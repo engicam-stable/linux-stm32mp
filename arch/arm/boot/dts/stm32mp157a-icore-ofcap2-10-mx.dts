@@ -265,10 +265,13 @@ enable-active-high;
 #endif	/*CONFIG_STM32MP1_TRUSTED*/
 	};
 
-	panel_backlight: panel-backlight {
-		compatible = "gpio-backlight";
-		default-on;
-	};
+    panel_backlight: panel-backlight {
+	    compatible = "gpio-backlight";
+	    gpios = <&gpiod 13 GPIO_ACTIVE_HIGH>;
+	    default-on;
+	    status = "okay";
+    };
+
 }; /*root*/
 
 &pinctrl {
@@ -735,8 +738,8 @@ enable-active-high;
 };
 
 &i2c6{
-	pinctrl-names = "default";
-	pinctrl-0 = <&i2c6_pins_z_mx>;
+  pinctrl-names = "default";
+  pinctrl-0 = <&i2c6_pins_z_mx>;
 	i2c-scl-rising-time-ns = <185>;
 	i2c-scl-falling-time-ns = <20>;
 	status = "okay";
@@ -809,12 +812,15 @@ enable-active-high;
 
 &ltdc {
 	status = "okay";
+
+	backlight = <&panel_backlight>;
+
 	port {
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		ltdc_ep1_out: endpoint@1 {
-			reg = <1>;
+		ltdc_ep1_out: endpoint@0 {
+			reg = <0>;
 			remote-endpoint = <&dsi_in>;
 		};
 	};
